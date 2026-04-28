@@ -23,31 +23,25 @@ autoRefreshToken:true
 
 export async function getCurrentUser(){
 
-const {data,error}=
-await supabase.auth.getUser();
-
-if(error){
-return null;
-}
-
-if(!data?.user){
-const {data:sessionData}=
+const { data: sessionData } =
 await supabase.auth.getSession();
 
-if(
-sessionData?.session?.user
-){
-return sessionData
-.session.user;
+if(sessionData?.session?.user){
+return sessionData.session.user;
 }
 
+const {
+data,
+error
+}=await supabase.auth.getUser();
+
+if(error || !data?.user){
 return null;
 }
 
 return data.user;
 
 }
-
 export async function ensureUser(){
 
 const user=
