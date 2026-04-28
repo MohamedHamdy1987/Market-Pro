@@ -100,7 +100,7 @@ window.openAddSupplier=async function(){
       });
       closeModal();
       toast('تم إضافة المورد ✅','success');
-      await loadSuppliers();
+  
       navigate('suppliers');
     }
   });
