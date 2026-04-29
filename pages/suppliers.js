@@ -83,7 +83,7 @@ window.sortSuppliers=function(by){
 };
 
 /* ── Add Supplier – Req 9 (opening_balance) ─────────────── */
-window.openAddSupplier=async function(){
+window.openAddSupplier = async function(){
   inputModal({
     title:'إضافة مورد',
     fields:[
@@ -91,36 +91,46 @@ window.openAddSupplier=async function(){
       {id:'phone',label:'الهاتف',type:'tel'},
       {id:'opening_balance',label:'رصيد مبدئي (ما يستحقه المورد)',type:'number',value:0,min:'0'}
     ],
+
     submitLabel:'حفظ',
-    onSubmit:async(vals)=>{
+
     onSubmit: async(vals)=>{
+      try{
 
-const inserted = await dbInsert('suppliers',{
- name: vals.name,
- phone: vals.phone || null,
- opening_balance: Number(vals.opening_balance || 0)
-});
+        const inserted = await dbInsert('suppliers',{
+          name: vals.name,
+          phone: vals.phone || null,
+          opening_balance: Number(vals.opening_balance || 0)
+        });
 
-console.log('INSERTED=',inserted);
+        console.log('INSERTED=', inserted);
 
-if(!inserted){
- toast('فشل الإضافة ❌','error');
- return;
-}
+        if(!inserted){
+          toast('فشل إضافة المورد ❌','error');
+          return;
+        }
 
-closeModal();
+        closeModal();
 
-window._allSuppliers.unshift(inserted);
+        if(!window._allSuppliers){
+          window._allSuppliers=[];
+        }
 
-document.getElementById('suppliers-list').innerHTML=
-renderSupplierCards(window._allSuppliers);
+        window._allSuppliers.unshift(inserted);
 
-toast('تم إضافة المورد ✅','success');
+        document.getElementById('suppliers-list').innerHTML =
+          renderSupplierCards(window._allSuppliers);
 
+        toast('تم إضافة المورد ✅','success');
+
+      }catch(e){
+        console.error(e);
+        toast(e.message || 'خطأ أثناء الإضافة','error');
+      }
     }
+
   });
 };
-
 /* ── Edit Supplier – Req 8 ───────────────────────────────── */
 window.editSupplier=async function(id,name,phone,openBal){
   inputModal({
