@@ -236,14 +236,14 @@ window.openAddProduct=async function(invoiceId){
     ],
     submitLabel:'إضافة الصنف',
     onSubmit:async(vals)=>{
-      await supabase.from('invoice_products').insert({
-        invoice_id:invoiceId,
-        name:vals.name,
-        qty:Number(vals.qty),
-        unit:vals.unit||null,
-        sold:0,
-        returned:0
-      });
+      await dbInsert('invoice_products',{
+  invoice_id:invoiceId,
+  name:vals.name,
+  qty:Number(vals.qty),
+  unit:vals.unit || null,
+  sold:0,
+  returned:0
+});
       closeModal();
       toast('تمت الإضافة ✅','success');
       openInvoice(invoiceId);
