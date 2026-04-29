@@ -84,12 +84,9 @@ error
 .single();
 
 if(error){
-console.error(
-error.message
-);
-return null;
+ console.error(error);
+ throw error;
 }
-
 return inserted;
 
 }
