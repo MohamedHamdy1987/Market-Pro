@@ -302,17 +302,23 @@ window.submitSellProduct=async function(productId,invoiceId){
       :null;
 
     const result=await sellProductAtomic({
-      p_product_id: productId,
-      p_invoice_id: invoiceId,
-      p_qty:        qty,
-      p_price:      price,
-      p_total:      total,
-      p_type:       type,
-      p_customer_id:customerId||null,
-      p_shop_id:    shopId||null,
-      p_customer_name:customerName,
-      p_date:       new Date().toISOString().split("T")[0]
-    });
+  p_product_id: productId,
+  p_invoice_id: invoiceId,
+
+  p_qty: qty,
+  p_count: count || null,
+  p_weight: weight || null,
+
+  p_price: price,
+  p_total: total,
+
+  p_type: type,
+  p_customer_id: customerId || null,
+  p_shop_id: shopId || null,
+  p_customer_name: customerName,
+
+  p_date: new Date().toISOString().split("T")[0]
+});
 
     if(!result.success){
       throw new Error(result.error||'فشل البيع');
