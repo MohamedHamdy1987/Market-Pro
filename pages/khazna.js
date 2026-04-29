@@ -10,11 +10,13 @@ export async function renderKhaznaPage(app) {
     { data: treasuries },
     { data: handovers }
   ] = await Promise.all([
-    supabase.from("collections")
-      .select("*,customers(full_name)")
-      .eq("user_id", user.id)
-      .order("created_at", { ascending: false }),
+    { data: collections },
 
+supabase.from("treasury_transactions")
+.select("*")
+.eq("user_id", user.id)
+.eq("trx_type","collection")
+.order("created_at",{ ascending:false }),
     supabase.from("expenses")
       .select("*")
       .eq("user_id", user.id)
