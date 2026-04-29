@@ -101,7 +101,9 @@ window.openAddSupplier=async function(){
       closeModal();
       toast('تم إضافة المورد ✅','success');
   
-      navigate('suppliers');
+      await renderSuppliersPage(
+document.getElementById('app')
+);
     }
   });
 };
