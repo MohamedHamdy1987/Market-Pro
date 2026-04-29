@@ -93,17 +93,30 @@ window.openAddSupplier=async function(){
     ],
     submitLabel:'حفظ',
     onSubmit:async(vals)=>{
-      await dbInsert('suppliers',{
-        name:vals.name,
-        phone:vals.phone||null,
-        opening_balance:Number(vals.opening_balance||0)
-      });
-      closeModal();
-      toast('تم إضافة المورد ✅','success');
-  
-      await renderSuppliersPage(
-document.getElementById('app')
-);
+    onSubmit: async(vals)=>{
+
+const inserted = await dbInsert('suppliers',{
+ name: vals.name,
+ phone: vals.phone || null,
+ opening_balance: Number(vals.opening_balance || 0)
+});
+
+console.log('INSERTED=',inserted);
+
+if(!inserted){
+ toast('فشل الإضافة ❌','error');
+ return;
+}
+
+closeModal();
+
+window._allSuppliers.unshift(inserted);
+
+document.getElementById('suppliers-list').innerHTML=
+renderSupplierCards(window._allSuppliers);
+
+toast('تم إضافة المورد ✅','success');
+
     }
   });
 };
